@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Darjeeling Homestay Booking</title>
+</head>
+<body>
+
+    <h1>Welcome to Darjeeling Homestay Booking</h1>
+
+    <h2>Available Homestays</h2>
+
+    {% for homestay in homestays %}
+        <div>
+            <h3>{{ homestay.name }}</h3>
+            <p>Location: {{ homestay.location }}</p>
+            <p>Price: ₹{{ homestay.price_per_night }}</p>
+            <hr>
+        </div>
+    {% empty %}
+        <p>No homestays available.</p>
+    {% endfor %}
+
+</body>
+</html>
