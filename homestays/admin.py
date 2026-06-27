@@ -17,3 +17,12 @@ class HomestayAdmin(admin.ModelAdmin):
         "bathrooms",
         "max_guests",
     )
+    list_filter = (
+        "wifi",
+        "parking",
+        "breakfast",
+    )
+    search_fields = (
+        "name",
+        "location",
+    )
