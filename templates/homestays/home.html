@@ -87,6 +87,16 @@
         <div class="col-md-4 mb-4">
 
             <div class="card shadow h-100">
+                  {% if homestay.image %}
+                     <img src="{{ homestay.image.url }}"
+                         class="card-img-top"
+                         alt="{{ homestay.name }}"
+                         style="height:220px; object-fit:cover;">
+                     {% else %}
+                      <img src="https://via.placeholder.com/400x220?text=No+Image"
+                      class="card-img-top"
+                      alt="No Image">
+                  {% endif %}
 
                 <div class="card-body">
 
