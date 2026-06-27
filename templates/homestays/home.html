@@ -154,7 +154,8 @@
                         ₹{{ homestay.price_per_night }}/night
                     </h5>
 
-                    <a href="#" class="btn btn-success" w-100>
+    
+                    <a href="{% url 'homestay_detail' homestay.id %}" class="btn btn-success w-100">
                         View Details
                     </a>
 
