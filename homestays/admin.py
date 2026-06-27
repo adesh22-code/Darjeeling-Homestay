@@ -9,4 +9,11 @@ class HomestayAdmin(admin.ModelAdmin):
         'location',
         'price_per_night',
         'available_rooms',
+        "name",
+        "location",
+        "price_per_night",
+        "available_rooms",
+        "bedrooms",
+        "bathrooms",
+        "max_guests",
     )
