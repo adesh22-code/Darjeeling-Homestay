@@ -1,4 +1,4 @@
-from .models import Homestay
+from .models import Homestay, Booking
 from django.shortcuts import render, get_object_or_404
 from .forms import BookingForm
 from django.contrib.auth.decorators import login_required
