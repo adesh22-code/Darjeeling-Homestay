@@ -135,9 +135,32 @@ Available Rooms :
 <strong>{{ homestay.available_rooms }}</strong>
 </p>
 
-<button class="btn btn-success btn-lg w-100">
-Book Now
-</button>
+<div class="card shadow booking-card">
+
+    <div class="card-body">
+
+        <h2 class="text-success">
+            ₹{{ homestay.price_per_night }}
+            <small>/night</small>
+        </h2>
+
+        <hr>
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button class="btn btn-success w-100">
+                Book Now
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
 
 <br><br>
 
