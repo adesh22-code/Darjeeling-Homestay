@@ -1,4 +1,3 @@
-from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import User
 
@@ -11,7 +10,7 @@ class CustomerRegistrationForm(UserCreationForm):
             "last_name",
             "username",
             "email",
-            "phone_number",
+            "phone",
             "password1",
             "password2",
         )
