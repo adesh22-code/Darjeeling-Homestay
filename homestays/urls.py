@@ -27,4 +27,9 @@ urlpatterns = [
     owner_views.delete_homestay,
     name="delete_homestay",
     ),
+    path(
+    "owner/bookings/",
+    owner_views.owner_bookings,
+    name="owner_bookings",
+    ),
 ]
