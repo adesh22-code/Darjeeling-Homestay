@@ -17,4 +17,9 @@ urlpatterns = [
     owner_views.add_homestay,
     name="add_homestay",
     ),
+    path(
+    "owner/edit/<int:id>/",
+    owner_views.edit_homestay,
+    name="edit_homestay",
+    ),
 ]
