@@ -12,4 +12,9 @@ urlpatterns = [
     owner_views.owner_dashboard,
     name="owner_dashboard",
     ),
+    path(
+    "owner/add/",
+    owner_views.add_homestay,
+    name="add_homestay",
+    ),
 ]
