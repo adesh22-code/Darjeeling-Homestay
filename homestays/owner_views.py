@@ -65,3 +65,45 @@ def add_homestay(request):
             "form": form,
         },
     )
+
+
+@login_required
+def edit_homestay(request, id):
+
+    if request.user.user_type != "owner":
+        return render(
+            request,
+            "403.html",
+            status=403,
+        )
+
+    homestay = get_object_or_404(
+        Homestay,
+        id=id,
+        owner=request.user,
+    )
+
+    if request.method == "POST":
+
+        form = HomestayForm(
+            request.POST,
+            request.FILES,
+            instance=homestay,
+        )
+
+        if form.is_valid():
+            form.save()
+            return redirect("owner_dashboard")
+
+    else:
+
+        form = HomestayForm(instance=homestay)
+
+    return render(
+        request,
+        "homestays/edit_homestay.html",
+        {
+            "form": form,
+            "homestay": homestay,
+        },
+    )
