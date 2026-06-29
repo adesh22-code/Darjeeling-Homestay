@@ -72,7 +72,20 @@ My Homestays
 
 <td>₹ {{ homestay.price_per_night }}</td>
 
+<td>
+
+<a href="{% url 'edit_homestay' homestay.id %}"
+
+class="btn btn-warning btn-sm">
+
+Edit
+
+</a>
+
+</td>
+
 </tr>
+
 
 {% endfor %}
 
