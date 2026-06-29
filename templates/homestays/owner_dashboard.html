@@ -74,13 +74,15 @@ My Homestays
 
 <td>
 
-<a href="{% url 'edit_homestay' homestay.id %}"
+    <a href="{% url 'edit_homestay' homestay.id %}"
+       class="btn btn-warning btn-sm">
+        Edit
+    </a>
 
-class="btn btn-warning btn-sm">
-
-Edit
-
-</a>
+    <a href="{% url 'delete_homestay' homestay.id %}"
+       class="btn btn-danger btn-sm">
+        Delete
+    </a>
 
 </td>
 
