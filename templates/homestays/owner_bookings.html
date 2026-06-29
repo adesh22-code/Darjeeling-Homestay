@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h2 class="mb-4">
+    📋 Bookings for My Homestays
+</h2>
+
+{% if bookings %}
+
+<table class="table table-bordered table-hover">
+
+<thead class="table-success">
+
+<tr>
+
+<th>Homestay</th>
+
+<th>Guest</th>
+
+<th>Phone</th>
+
+<th>Check-in</th>
+
+<th>Check-out</th>
+
+<th>Guests</th>
+
+<th>Status</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for booking in bookings %}
+
+<tr>
+
+<td>{{ booking.homestay.name }}</td>
+
+<td>{{ booking.guest_name }}</td>
+
+<td>{{ booking.guest_phone }}</td>
+
+<td>{{ booking.check_in }}</td>
+
+<td>{{ booking.check_out }}</td>
+
+<td>{{ booking.guests }}</td>
+
+<td>
+
+<span class="badge bg-warning">
+
+{{ booking.status }}
+
+</span>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% else %}
+
+<div class="alert alert-info">
+
+No bookings yet.
+
+</div>
+
+{% endif %}
+
+</div>
+
+{% endblock %}
