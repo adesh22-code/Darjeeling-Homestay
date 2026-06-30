@@ -48,4 +48,9 @@ urlpatterns = [
     views.cancel_booking,
     name="customer_cancel_booking",
     ),
+    path(
+    "owner/booking/<int:booking_id>/status/",
+    owner_views.update_booking_status,
+    name="update_booking_status",
+    ),
 ]
