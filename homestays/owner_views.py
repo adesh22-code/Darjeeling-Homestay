@@ -2,6 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms_owner import HomestayForm
 from .models import Homestay, Booking
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -188,5 +190,28 @@ def cancel_booking(request, booking_id):
 
     booking.status = "cancelled"
     booking.save()
+
+    return redirect("owner_bookings")
+
+@require_POST
+@login_required
+def update_booking_status(request, booking_id):
+
+    booking = get_object_or_404(
+        Booking,
+        id=booking_id,
+        homestay__owner=request.user,
+    )
+
+    status = request.POST.get("status")
+
+    if status in [
+        "pending",
+        "confirmed",
+        "cancelled",
+        "completed",
+    ]:
+        booking.status = status
+        booking.save()
 
     return redirect("owner_bookings")
