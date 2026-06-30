@@ -16,9 +16,16 @@ def home(request):
     )
 
 
+
+
 @login_required
 def my_bookings(request):
-    bookings = Booking.objects.filter(user=request.user).order_by("-created_at")
+
+    bookings = Booking.objects.filter(
+        user=request.user
+    ).select_related(
+        "homestay"
+    ).order_by("-created_at")
 
     return render(
         request,
