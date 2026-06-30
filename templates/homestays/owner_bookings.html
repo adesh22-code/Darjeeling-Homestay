@@ -30,6 +30,7 @@
                 <th>Check-out</th>
                 <th>Guests</th>
                 <th>Status</th>
+                <th>Action</th>
             </tr>
 
         </thead>
@@ -48,10 +49,56 @@
                 <td>{{ booking.guests }}</td>
 
                 <td>
-                    <span class="badge bg-warning text-dark">
-                        {{ booking.get_status_display }}
-                    </span>
-                </td>
+
+{% if booking.status == "pending" %}
+
+    <span class="badge bg-warning text-dark">
+        Pending
+    </span>
+
+{% elif booking.status == "confirmed" %}
+
+    <span class="badge bg-success">
+        Confirmed
+    </span>
+
+{% elif booking.status == "cancelled" %}
+
+    <span class="badge bg-danger">
+        Cancelled
+    </span>
+
+{% else %}
+
+    <span class="badge bg-secondary">
+        {{ booking.get_status_display }}
+    </span>
+
+{% endif %}
+
+</td>
+
+<td>
+
+{% if booking.status == "pending" %}
+
+<a href="{% url 'confirm_booking' booking.id %}"
+   class="btn btn-success btn-sm">
+    Confirm
+</a>
+
+<a href="{% url 'cancel_booking' booking.id %}"
+   class="btn btn-danger btn-sm">
+    Cancel
+</a>
+
+{% else %}
+
+-
+
+{% endif %}
+
+</td>
 
             </tr>
 
