@@ -32,4 +32,15 @@ urlpatterns = [
     owner_views.owner_bookings,
     name="owner_bookings",
     ),
+    path(
+    "owner/booking/<int:booking_id>/confirm/",
+    owner_views.confirm_booking,
+    name="confirm_booking",
+    ),
+
+    path(
+    "owner/booking/<int:booking_id>/cancel/",
+    owner_views.cancel_booking,
+    name="cancel_booking",
+    ),
 ]
