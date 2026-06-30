@@ -37,6 +37,23 @@ def my_bookings(request):
 
 
 
+@login_required
+def cancel_booking(request, booking_id):
+
+    booking = get_object_or_404(
+        Booking,
+        id=booking_id,
+        user=request.user,
+    )
+
+    if booking.status == "pending":
+        booking.status = "cancelled"
+        booking.save()
+
+    return redirect("my_bookings")
+
+
+
 def homestay_detail(request, id):
     homestay = get_object_or_404(Homestay, id=id)
 
