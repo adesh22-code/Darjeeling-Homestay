@@ -28,14 +28,24 @@ def update_booking_status(request, booking_id):
     return redirect("owner_bookings")
 
 
+
 def home(request):
+
+    query = request.GET.get("q")
+
     homestays = Homestay.objects.all()
+
+    if query:
+        homestays = homestays.filter(
+            location__icontains=query
+        )
 
     return render(
         request,
         "homestays/home.html",
         {
-            "homestays": homestays
+            "homestays": homestays,
+            "query": query,
         }
     )
 
