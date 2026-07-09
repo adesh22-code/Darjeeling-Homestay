@@ -53,4 +53,9 @@ urlpatterns = [
     owner_views.update_booking_status,
     name="update_booking_status",
     ),
+    path(
+    "booking/<int:booking_id>/review/",
+    views.add_review,
+    name="add_review",
+    ),
 ]
