@@ -97,38 +97,44 @@
                 </p>
 
                 <!-- Customer Actions -->
+
                 {% if booking.status == "pending" %}
 
-                <hr>
+                    <hr>
 
-                <a href="{% url 'customer_cancel_booking' booking.id %}"
-                   class="btn btn-outline-danger">
-                    ❌ Cancel Booking
-                </a>
+                    <a href="{% url 'customer_cancel_booking' booking.id %}"
+                       class="btn btn-outline-danger">
+                        ❌ Cancel Booking
+                    </a>
 
                 {% elif booking.status == "confirmed" %}
 
-                <hr>
+                    <hr>
 
-                <div class="alert alert-success mb-0">
-                    ✅ Your booking has been confirmed by the homestay owner.
-                </div>
+                    <div class="alert alert-success mb-0">
+                        ✅ Your booking has been confirmed by the homestay owner.
+                    </div>
 
                 {% elif booking.status == "cancelled" %}
 
-                <hr>
+                    <hr>
 
-                <div class="alert alert-danger mb-0">
-                    ❌ This booking has been cancelled.
-                </div>
+                    <div class="alert alert-danger mb-0">
+                        ❌ This booking has been cancelled.
+                    </div>
 
                 {% elif booking.status == "completed" %}
 
-                <hr>
+                    <hr>
 
-                <div class="alert alert-primary mb-0">
-                    🎉 Thank you for staying with us! Your booking is completed.
-                </div>
+                    <div class="alert alert-primary">
+                        🎉 Thank you for staying with us! Your booking is completed.
+                    </div>
+
+                    <a href="{% url 'add_review' booking.id %}"
+                       class="btn btn-warning">
+                        ⭐ Write Review
+                    </a>
 
                 {% endif %}
 
@@ -153,15 +159,6 @@
             </a>
 
         </div>
-
-    {% endif %}
-
-    {% if booking.status == "completed" %}
-
-        <a href="{% url 'add_review' booking.id %}"
-           class="btn btn-warning">
-            ⭐ Write Review
-        </a>
 
     {% endif %}
 
