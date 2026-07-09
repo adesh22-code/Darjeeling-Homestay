@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from .models import Booking
+from .models import Booking, Homestay, Review
 
 
 class BookingForm(forms.ModelForm):
@@ -42,3 +42,32 @@ class BookingForm(forms.ModelForm):
                 )
 
         return cleaned_data
+
+
+class ReviewForm(forms.ModelForm):
+
+    class Meta:
+        model = Review
+
+        fields = [
+            "rating",
+            "comment",
+        ]
+
+        widgets = {
+            "rating": forms.Select(
+                choices=[
+                    (1, "⭐ 1"),
+                    (2, "⭐⭐ 2"),
+                    (3, "⭐⭐⭐ 3"),
+                    (4, "⭐⭐⭐⭐ 4"),
+                    (5, "⭐⭐⭐⭐⭐ 5"),
+                ]
+            ),
+            "comment": forms.Textarea(
+                attrs={
+                    "rows": 4,
+                    "placeholder": "Write your experience..."
+                }
+            ),
+        }
