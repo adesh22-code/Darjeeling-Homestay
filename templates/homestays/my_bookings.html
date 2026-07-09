@@ -156,6 +156,15 @@
 
     {% endif %}
 
+    {% if booking.status == "completed" %}
+
+        <a href="{% url 'add_review' booking.id %}"
+           class="btn btn-warning">
+            ⭐ Write Review
+        </a>
+
+    {% endif %}
+
 </div>
 
 </body>
