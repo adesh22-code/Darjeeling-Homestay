@@ -1,8 +1,9 @@
-from .models import Homestay, Booking
+from .models import Homestay, Booking, Review
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import BookingForm
+from .forms import BookingForm, ReviewForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+
 
 @require_POST
 @login_required
@@ -132,4 +133,49 @@ def homestay_detail(request, id):
             "homestay": homestay,
             "form": form,
         }
+    )
+
+
+@login_required
+def add_review(request, booking_id):
+
+    booking = get_object_or_404(
+        Booking,
+        id=booking_id,
+        user=request.user
+    )
+
+    if booking.status != "completed":
+        return redirect("my_bookings")
+
+    if Review.objects.filter(booking=booking).exists():
+        return redirect("my_bookings")
+
+    if request.method == "POST":
+
+        form = ReviewForm(request.POST)
+
+        if form.is_valid():
+
+            review = form.save(commit=False)
+
+            review.booking = booking
+            review.homestay = booking.homestay
+            review.user = request.user
+
+            review.save()
+
+            return redirect("my_bookings")
+
+    else:
+
+        form = ReviewForm()
+
+    return render(
+        request,
+        "homestays/add_review.html",
+        {
+            "form": form,
+            "booking": booking,
+        },
     )
