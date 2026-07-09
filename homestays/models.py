@@ -78,3 +78,37 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"{self.guest_name} - {self.homestay.name}"
+
+
+
+class Review(models.Model):
+
+    booking = models.OneToOneField(
+        Booking,
+        on_delete=models.CASCADE,
+        related_name="review"
+    )
+
+    homestay = models.ForeignKey(
+        Homestay,
+        on_delete=models.CASCADE,
+        related_name="reviews"
+    )
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="reviews"
+    )
+
+    rating = models.PositiveSmallIntegerField()
+
+    comment = models.TextField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.user.username} - {self.homestay.name} ({self.rating}⭐)"
