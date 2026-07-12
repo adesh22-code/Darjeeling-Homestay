@@ -57,6 +57,32 @@
 {{ homestay.name }}
 </h1>
 
+<hr>
+
+{% if average_rating %}
+
+<h5 class="text-warning">
+
+    ⭐ {{ average_rating|floatformat:1 }}
+
+    <small class="text-muted">
+
+        ({{ reviews.count }} Reviews)
+
+    </small>
+
+</h5>
+
+{% else %}
+
+<p class="text-muted">
+
+    No reviews yet.
+
+</p>
+
+{% endif %}
+
 <p class="text-muted fs-5">
 📍 {{ homestay.location }}
 </p>
