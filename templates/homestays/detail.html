@@ -203,6 +203,53 @@ Back to Home
 </div>
 
 </div>
+<hr class="mt-5">
+
+<h3 class="mb-4">
+    Customer Reviews
+</h3>
+
+{% if reviews %}
+
+    {% for review in reviews %}
+
+        <div class="card shadow-sm mb-3">
+
+            <div class="card-body">
+
+                <h5>
+                    ⭐ {{ review.rating }}/5
+                </h5>
+
+                <p>
+                    {{ review.comment }}
+                </p>
+
+                <small class="text-muted">
+
+                    {{ review.user.first_name|default:review.user.username }}
+
+                    •
+
+                    {{ review.created_at|date:"d M Y" }}
+
+                </small>
+
+            </div>
+
+        </div>
+
+    {% endfor %}
+
+{% else %}
+
+<div class="alert alert-info">
+
+    No reviews yet.
+
+</div>
+
+{% endif %}
 
 </body>
 </html>
