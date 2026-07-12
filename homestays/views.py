@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .forms import BookingForm, ReviewForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
+from django.db.models import Avg
 
 
 @require_POST
@@ -87,12 +88,22 @@ def cancel_booking(request, booking_id):
 
     return redirect("my_bookings")
 
-
+from django.db.models import Avg
 
 def homestay_detail(request, id):
+
     homestay = get_object_or_404(Homestay, id=id)
 
+    # Get all reviews for this homestay
+    reviews = homestay.reviews.all()
+
+    # Calculate average rating
+    average_rating = reviews.aggregate(
+        Avg("rating")
+    )["rating__avg"]
+
     if request.method == "POST":
+
         form = BookingForm(request.POST)
 
         if form.is_valid():
@@ -107,12 +118,14 @@ def homestay_detail(request, id):
 
             # Validate maximum guests
             if booking.guests > homestay.max_guests:
+
                 form.add_error(
                     "guests",
                     f"This homestay allows a maximum of {homestay.max_guests} guests."
                 )
 
             else:
+
                 booking.save()
 
                 return render(
@@ -124,6 +137,7 @@ def homestay_detail(request, id):
                 )
 
     else:
+
         form = BookingForm()
 
     return render(
@@ -132,8 +146,12 @@ def homestay_detail(request, id):
         {
             "homestay": homestay,
             "form": form,
+            "reviews": reviews,
+            "average_rating": average_rating,
         }
     )
+
+
 
 
 @login_required
