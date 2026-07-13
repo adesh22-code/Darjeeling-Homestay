@@ -216,54 +216,85 @@ Login
 <div class="row">
 
 <div class="col-lg-8">
-
 {% if homestay.image %}
-<img src="{{ homestay.image.url }}" class="hero-image mb-4">
-{% endif %}
 
-<h1 class="fw-bold">
-{{ homestay.name }}
-</h1>
+<div class="position-relative mb-5">
 
-<hr>
+    <img src="{{ homestay.image.url }}"
+         class="hero-image">
 
-{% if average_rating %}
+    <div class="position-absolute bottom-0 start-0 w-100 p-4"
+         style="background:linear-gradient(transparent,rgba(0,0,0,.75)); border-radius:20px;">
 
-<h5 class="text-warning">
+        <h1 class="display-4 fw-bold text-white">
 
-    ⭐ {{ average_rating|floatformat:1 }}
+            {{ homestay.name }}
 
-    <small class="text-muted">
+        </h1>
 
-        ({{ reviews.count }} Reviews)
+        <p class="text-white fs-5 mb-2">
 
-    </small>
+            <i class="bi bi-geo-alt-fill"></i>
 
-</h5>
+            {{ homestay.location }}
 
-{% else %}
+        </p>
 
-<p class="text-muted">
+        {% if average_rating %}
 
-    No reviews yet.
+        <span class="badge bg-warning text-dark fs-6">
 
-</p>
+            ⭐ {{ average_rating|floatformat:1 }}
+
+        </span>
+
+        <span class="text-white">
+
+            ({{ reviews.count }} Reviews)
+
+        </span>
+
+        {% else %}
+
+        <span class="badge bg-light text-dark">
+
+            New Homestay
+
+        </span>
+
+        {% endif %}
+
+    </div>
+
+</div>
 
 {% endif %}
 
 <p class="text-muted fs-5">
 📍 {{ homestay.location }}
 </p>
+<h2 class="section-title">
 
-<hr>
+<i class="bi bi-book-half"></i>
 
-<h3>Description</h3>
+About this Homestay
 
-<p>
+</h2>
+
+<div class="card border-0 shadow-sm">
+
+<div class="card-body p-4">
+
+<p class="fs-5 text-secondary">
+
 {{ homestay.description }}
+
 </p>
 
-<hr>
+</div>
+
+</div>
+
 
 <h3>Amenities</h3>
 
