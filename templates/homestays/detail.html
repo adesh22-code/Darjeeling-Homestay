@@ -298,51 +298,66 @@ About this Homestay
 </div>
 
 
-<h3>Amenities</h3>
+<h2 class="section-title">
+    <i class="bi bi-stars"></i> Amenities
+</h2>
 
-<div class="row">
+<div class="row g-3">
 
-<div class="col-md-6">
+    <div class="col-6 col-md-4">
+        <div class="amenity-card text-center">
+            <i class="bi bi-house-door-fill fs-1 text-success"></i>
+            <h6 class="mt-3">Bedrooms</h6>
+            <strong>{{ homestay.bedrooms }}</strong>
+        </div>
+    </div>
 
-<p class="feature">🛏 Bedrooms : {{ homestay.bedrooms }}</p>
+    <div class="col-6 col-md-4">
+        <div class="amenity-card text-center">
+            <i class="bi bi-droplet-half fs-1 text-primary"></i>
+            <h6 class="mt-3">Bathrooms</h6>
+            <strong>{{ homestay.bathrooms }}</strong>
+        </div>
+    </div>
 
-<p class="feature">🚿 Bathrooms : {{ homestay.bathrooms }}</p>
+    <div class="col-6 col-md-4">
+        <div class="amenity-card text-center">
+            <i class="bi bi-people-fill fs-1 text-warning"></i>
+            <h6 class="mt-3">Guests</h6>
+            <strong>{{ homestay.max_guests }}</strong>
+        </div>
+    </div>
 
-<p class="feature">👥 Guests : {{ homestay.max_guests }}</p>
+    {% if homestay.wifi %}
+    <div class="col-6 col-md-4">
+        <div class="amenity-card text-center">
+            <i class="bi bi-wifi fs-1 text-success"></i>
+            <h6 class="mt-3">Free WiFi</h6>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if homestay.parking %}
+    <div class="col-6 col-md-4">
+        <div class="amenity-card text-center">
+            <i class="bi bi-p-square-fill fs-1 text-success"></i>
+            <h6 class="mt-3">Parking</h6>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if homestay.breakfast %}
+    <div class="col-6 col-md-4">
+        <div class="amenity-card text-center">
+            <i class="bi bi-cup-hot-fill fs-1 text-danger"></i>
+            <h6 class="mt-3">Breakfast</h6>
+        </div>
+    </div>
+    {% endif %}
 
 </div>
 
-<div class="col-md-6">
 
-<p class="feature">
-{% if homestay.wifi %}
-✅ WiFi
-{% else %}
-❌ WiFi
-{% endif %}
-</p>
-
-<p class="feature">
-{% if homestay.parking %}
-✅ Parking
-{% else %}
-❌ Parking
-{% endif %}
-</p>
-
-<p class="feature">
-{% if homestay.breakfast %}
-✅ Breakfast
-{% else %}
-❌ Breakfast
-{% endif %}
-</p>
-
-</div>
-
-</div>
-
-</div>
 
 <div class="col-lg-4">
 
