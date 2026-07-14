@@ -7,7 +7,6 @@ SECRET_KEY = "django-insecure-change-this-later"
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-ALLOWED_HOSTS = ['yourusername.pythonanywhere.com']
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.app.github.dev",
