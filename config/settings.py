@@ -7,7 +7,11 @@ SECRET_KEY = "django-insecure-change-this-later"
 
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    ".onrender.com",
+]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.app.github.dev",
