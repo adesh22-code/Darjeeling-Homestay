@@ -4,6 +4,11 @@ from . import owner_views
 from . import views
 
 urlpatterns = [
+    path(
+    "owner/gallery/<int:id>/",
+    owner_views.manage_gallery,
+    name="manage_gallery",
+),
     path("", views.home, name="home"),
     path("homestay/<int:id>/", views.homestay_detail, name="homestay_detail"),
     path("my-bookings/", views.my_bookings, name="my_bookings"),
