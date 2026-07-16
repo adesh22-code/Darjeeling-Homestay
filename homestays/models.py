@@ -37,21 +37,29 @@ class Homestay(models.Model):
 # homestays/models.py
 
 class HomestayImage(models.Model):
+
     homestay = models.ForeignKey(
         Homestay,
         on_delete=models.CASCADE,
-        related_name="gallery"
+        related_name="gallery",
     )
 
-    image = models.ImageField(upload_to="gallery/")
+    image = models.ImageField(
+        upload_to="homestay_gallery/"
+    )
 
     caption = models.CharField(
         max_length=100,
-        blank=True
+        blank=True,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
     )
 
     def __str__(self):
-        return f"{self.homestay.name} Image"
+        return f"{self.homestay.name} - {self.caption or 'Image'}"
+
 
 
 class Booking(models.Model):
