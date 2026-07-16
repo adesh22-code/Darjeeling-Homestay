@@ -7,12 +7,10 @@ class HomestayImageAdmin(admin.ModelAdmin):
     list_display = (
         "homestay",
         "caption",
-        "created_at",
     )
 
     list_filter = (
         "homestay",
-        "created_at",
     )
 
     search_fields = (
