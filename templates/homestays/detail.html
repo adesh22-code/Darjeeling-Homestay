@@ -10,9 +10,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
     <style>
-      body{
+    body{
         background:#eef7f1;
         font-family:Arial, Helvetica, sans-serif;
+        overflow-x: hidden; /* Prevents 3D elements from creating horizontal scrollbars */
     }
 
     .navbar{
@@ -36,78 +37,73 @@
         color:#2e7d32 !important;
     }
 
-    .hero-image{
+    /* ---------- Clean 3D Gallery Fixes ---------- */
+    .gallery-container{
+        position:relative;
         width:100%;
-        height:550px;
-        object-fit:cover;
-        border-radius:20px;
-        box-shadow:0 15px 35px rgba(0,0,0,.15);
+        max-width:550px; /* Reduced container width so rotating images don't clip the sidebar */
+        height:380px; /* Highly stable height ratio */
+        margin: 40px auto;
+        perspective:1000px;
     }
-    /* ---------- 3D Gallery ---------- */
 
-.gallery-container{
-    position:relative;
-    width:100%;
-    max-width:900px;
-    height:550px;
-    margin:auto;
-    perspective:1200px;
-}
+    .gallery{
+        width:100%;
+        height:100%;
+        position:absolute;
+        transform-style:preserve-3d;
+        transition:transform .8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
 
-.gallery{
-    width:100%;
-    height:100%;
-    position:absolute;
-    transform-style:preserve-3d;
-    transition:transform .8s ease;
-}
+    .gallery-item{
+        position:absolute;
+        width:100%;
+        height:100%;
+        border-radius:20px;
+        overflow:hidden;
+        box-shadow:0 10px 25px rgba(0,0,0,.15);
+        backface-visibility:hidden; /* Hides back-facing images to prevent overlapping chaos */
+        transition: opacity 0.5s;
+    }
 
-.gallery-item{
-    position:absolute;
-    width:100%;
-    height:100%;
-    border-radius:20px;
-    overflow:hidden;
-    box-shadow:0 15px 35px rgba(0,0,0,.2);
-    backface-visibility:hidden;
-}
+    .gallery-item img{
+        width:100%;
+        height:100%;
+        object-fit:cover;
+    }
 
-.gallery-item img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
+    .gallery-caption{
+        position:absolute;
+        left:0;
+        right:0;
+        bottom:0;
+        padding:20px;
+        color:white;
+        font-size:18px;
+        background:linear-gradient(transparent,rgba(0,0,0,.8));
+    }
 
-.gallery-caption{
-    position:absolute;
-    left:0;
-    right:0;
-    bottom:0;
-    padding:20px;
-    color:white;
-    font-size:20px;
-    background:linear-gradient(transparent,rgba(0,0,0,.8));
-}
+    .gallery-controls{
+        display:flex;
+        justify-content:center;
+        gap:20px;
+        margin-top:20px;
+        margin-bottom:40px;
+    }
 
-.gallery-controls{
-    display:flex;
-    justify-content:center;
-    gap:20px;
-    margin-top:30px;
-}
+    .gallery-btn{
+        border:none;
+        background:#2e7d32;
+        color:white;
+        padding:10px 20px;
+        border-radius:30px;
+        font-weight:bold;
+        transition: 0.2s ease-in-out;
+    }
 
-.gallery-btn{
-    border:none;
-    background:#2e7d32;
-    color:white;
-    padding:12px 24px;
-    border-radius:30px;
-    font-weight:bold;
-}
-
-.gallery-btn:hover{
-    background:#1b5e20;
-}
+    .gallery-btn:hover{
+        background:#1b5e20;
+    }
 
     .title{
         font-size:45px;
@@ -194,65 +190,37 @@
         
         <!-- MAIN CONTENT COLUMN (LEFT) -->
         <div class="col-lg-8">
-            <div class="gallery-container">
-
-    <div class="gallery" id="gallery">
-
-        {% for photo in gallery %}
-
-        <div class="gallery-item">
-
-            <img src="{{ photo.image.url }}" alt="{{ photo.caption }}">
-
-            {% if photo.caption %}
-            <div class="gallery-caption">
-                {{ photo.caption }}
-            </div>
-            {% endif %}
-
-        </div>
-
-        {% empty %}
-
-        {% if homestay.image %}
-
-        <div class="gallery-item">
-
-            <img src="{{ homestay.image.url }}" alt="{{ homestay.name }}">
-
-            <div class="gallery-caption">
-
-                {{ homestay.name }}
-
-            </div>
-
-        </div>
-
-        {% endif %}
-
-        {% endfor %}
-
-    </div>
-
-</div>
-
-<div class="gallery-controls">
-
-    <button class="gallery-btn" id="prevBtn">
-
-        ← Previous
-
-    </button>
-
-    <button class="gallery-btn" id="nextBtn">
-
-        Next →
-
-    </button>
-
-</div>
-
+            <h1 class="title">{{ homestay.name }}</h1>
             <p class="text-muted fs-5">📍 {{ homestay.location }}</p>
+
+            <div class="gallery-container">
+                <div class="gallery" id="gallery">
+                    {% for photo in gallery %}
+                    <div class="gallery-item">
+                        <img src="{{ photo.image.url }}" alt="{{ photo.caption }}">
+                        {% if photo.caption %}
+                        <div class="gallery-caption">
+                            {{ photo.caption }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                    {% if homestay.image %}
+                    <div class="gallery-item">
+                        <img src="{{ homestay.image.url }}" alt="{{ homestay.name }}">
+                        <div class="gallery-caption">
+                            {{ homestay.name }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="gallery-controls">
+                <button class="gallery-btn" id="prevBtn">← Previous</button>
+                <button class="gallery-btn" id="nextBtn">Next →</button>
+            </div>
             
             <h2 class="section-title"><i class="bi bi-book-half"></i> About this Homestay</h2>
             <div class="card border-0 shadow-sm">
@@ -330,7 +298,7 @@
                 </div>
                 {% endif %}
             </div>
-        </div> <!-- /col-lg-8 CLOSING TAG WAS MISSING HERE -->
+        </div> <!-- Correctly closing the main left column -->
 
         <!-- SIDEBAR COLUMN (RIGHT) -->
         <div class="col-lg-4">
@@ -349,7 +317,7 @@
                     <a href="/" class="btn btn-outline-secondary w-100 mt-3">Back to Home</a>
                 </div>
             </div>
-        </div> <!-- /col-lg-4 -->
+        </div>
 
     </div> <!-- /row -->
 
@@ -384,98 +352,80 @@
 </footer>
 
 <script>
-
 const gallery = document.getElementById("gallery");
-
 const items = document.querySelectorAll(".gallery-item");
-
 let currentAngle = 0;
-
 const total = items.length;
-
 const angle = 360 / total;
 
-const radius = 420;
-
-
-
-items.forEach((item,index)=>{
-
-    item.style.transform =
-        `rotateY(${index*angle}deg) translateZ(${radius}px)`;
-
-});
-
-
-
-function rotate(){
-
-    gallery.style.transform =
-        `rotateY(${currentAngle}deg)`;
-
+// Dynamic 3D depth based on screen size
+function getRadius() {
+    return window.innerWidth < 768 ? 180 : 320; 
 }
 
+function initGallery() {
+    const radius = getRadius();
+    items.forEach((item, index) => {
+        item.style.transform = `rotateY(${index * angle}deg) translateZ(${radius}px)`;
+        // Fade out items sitting on the back half of the 3D wheel for a cleaner aesthetic
+        if (index !== 0 && total > 2) {
+            item.style.opacity = "0.5";
+        }
+    });
+}
 
+function rotate() {
+    gallery.style.transform = `rotateY(${currentAngle}deg)`;
+    
+    // Smoothly adjust opacity of items as they rotate
+    const activeIndex = Math.round((-currentAngle / angle) % total + total) % total;
+    items.forEach((item, index) => {
+        if (index === activeIndex) {
+            item.style.opacity = "1";
+        } else {
+            item.style.opacity = "0.4"; // Backside elements are faded
+        }
+    });
+}
 
-document.getElementById("nextBtn").onclick=function(){
-
+document.getElementById("nextBtn").onclick = function() {
     currentAngle -= angle;
-
     rotate();
-
 }
 
-
-
-document.getElementById("prevBtn").onclick=function(){
-
+document.getElementById("prevBtn").onclick = function() {
     currentAngle += angle;
-
     rotate();
-
 }
-
-
 
 // Swipe support
+let startX = 0;
+gallery.addEventListener("touchstart", (e) => {
+    startX = e.changedTouches[0].screenX;
+}, {passive: true});
 
-let startX=0;
-
-gallery.addEventListener("touchstart",(e)=>{
-
-    startX=e.changedTouches[0].screenX;
-
-},{passive:true});
-
-
-
-gallery.addEventListener("touchend",(e)=>{
-
-    let endX=e.changedTouches[0].screenX;
-
-    let diff=startX-endX;
-
-    if(Math.abs(diff)>40){
-
-        if(diff>0){
-
-            currentAngle-=angle;
-
-        }else{
-
-            currentAngle+=angle;
-
+gallery.addEventListener("touchend", (e) => {
+    let endX = e.changedTouches[0].screenX;
+    let diff = startX - endX;
+    if (Math.abs(diff) > 40) {
+        if (diff > 0) {
+            currentAngle -= angle;
+        } else {
+            currentAngle += angle;
         }
-
         rotate();
-
     }
+}, {passive: true});
 
-},{passive:true});
+// Recalculate 3D spacing on screen resize
+window.addEventListener('resize', () => {
+    initGallery();
+    rotate();
+});
 
+initGallery();
 rotate();
-
-    </script>
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
