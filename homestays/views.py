@@ -88,11 +88,14 @@ def cancel_booking(request, booking_id):
 
     return redirect("my_bookings")
 
-from django.db.models import Avg
+
 
 def homestay_detail(request, id):
 
     homestay = get_object_or_404(Homestay, id=id)
+
+    # Gallery images
+    gallery = homestay.gallery.all()
 
     # Get all reviews for this homestay
     reviews = homestay.reviews.all()
@@ -145,11 +148,13 @@ def homestay_detail(request, id):
         "homestays/detail.html",
         {
             "homestay": homestay,
+            "gallery": gallery,          # <-- Added this
             "form": form,
             "reviews": reviews,
             "average_rating": average_rating,
         }
     )
+
 
 
 
