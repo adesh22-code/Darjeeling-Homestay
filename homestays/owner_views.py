@@ -5,6 +5,27 @@ from .models import Homestay, Booking, HomestayImage
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from .forms import HomestayImageForm
+from homestays.models import HomestayImage
+
+def delete_gallery_image(request, image_id):
+
+    image = get_object_or_404(
+        HomestayImage,
+        id=image_id,
+    )
+
+    homestay = image.homestay
+
+    # Only the owner can delete
+    if request.user != homestay.owner:
+        return redirect("/")
+
+    image.delete()
+
+    return redirect(
+        "manage_gallery",
+        id=homestay.id,
+    )
 
 
 def manage_gallery(request, id):
