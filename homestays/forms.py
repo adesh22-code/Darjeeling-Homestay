@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from .models import Booking, Homestay, Review
+from .models import Booking, Homestay, Review, HomestayImage
 
 
 class BookingForm(forms.ModelForm):
@@ -42,6 +42,31 @@ class BookingForm(forms.ModelForm):
                 )
 
         return cleaned_data
+
+class HomestayImageForm(forms.ModelForm):
+
+    class Meta:
+
+        model = HomestayImage
+
+        fields = [
+            "image",
+            "caption",
+        ]
+
+        widgets = {
+            "caption": forms.TextInput(
+                attrs={
+                    "class": "form-control",
+                    "placeholder": "Caption (optional)",
+                }
+            ),
+            "image": forms.ClearableFileInput(
+                attrs={
+                    "class": "form-control",
+                }
+            ),
+            }
 
 
 class ReviewForm(forms.ModelForm):
