@@ -1,9 +1,55 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms_owner import HomestayForm
-from .models import Homestay, Booking
+from .models import Homestay, Booking, HomestayImage
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
+from .forms import HomestayImageForm
+
+
+def manage_gallery(request, id):
+
+    homestay = get_object_or_404(
+        Homestay,
+        id=id,
+        owner=request.user,
+    )
+
+    if request.method == "POST":
+
+        form = HomestayImageForm(
+            request.POST,
+            request.FILES,
+        )
+
+        if form.is_valid():
+
+            image = form.save(commit=False)
+
+            image.homestay = homestay
+
+            image.save()
+
+            return redirect(
+                "manage_gallery",
+                id=homestay.id,
+            )
+
+    else:
+
+        form = HomestayImageForm()
+
+    images = homestay.gallery.all()
+
+    return render(
+        request,
+        "owner/gallery.html",
+        {
+            "homestay": homestay,
+            "images": images,
+            "form": form,
+        },
+    )
 
 
 
