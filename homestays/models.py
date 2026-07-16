@@ -36,7 +36,7 @@ class Homestay(models.Model):
 
 # homestays/models.py
 
-class HomestayImage(models.Model):
+ class HomestayImage(models.Model):
 
     homestay = models.ForeignKey(
         Homestay,
@@ -44,17 +44,11 @@ class HomestayImage(models.Model):
         related_name="gallery",
     )
 
-    image = models.ImageField(
-        upload_to="homestay_gallery/"
-    )
+    image = models.ImageField(upload_to="homestay_gallery/")
 
     caption = models.CharField(
         max_length=100,
         blank=True,
-    )
-
-    created_at = models.DateTimeField(
-        auto_now_add=True,
     )
 
     def __str__(self):
