@@ -116,11 +116,21 @@ Upload Image
 
 <div class="card-body">
 
-<h6>
+<h6 class="mb-3">
 
 {{ image.caption }}
 
 </h6>
+
+<a href="{% url 'delete_gallery_image' image.id %}"
+   class="btn btn-danger btn-sm w-100"
+   onclick="return confirm('Delete this image?');">
+
+<i class="bi bi-trash"></i>
+
+Delete
+
+</a>
 
 </div>
 
