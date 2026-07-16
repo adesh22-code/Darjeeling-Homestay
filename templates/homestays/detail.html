@@ -13,7 +13,7 @@
     body{
         background:#eef7f1;
         font-family:Arial, Helvetica, sans-serif;
-        overflow-x: hidden; /* Prevents 3D elements from creating horizontal scrollbars */
+        overflow-x: hidden; 
     }
 
     .navbar{
@@ -37,14 +37,14 @@
         color:#2e7d32 !important;
     }
 
-    /* ---------- Clean 3D Gallery Fixes ---------- */
+    /* ---------- Clean 3D Gallery (Desktop) ---------- */
     .gallery-container{
-    position:relative;
-    width:100%;
-    max-width:340px;
-    height:230px;
-    margin:0 auto;
-    perspective:1000px;
+        position:relative;
+        width:100%;
+        max-width:340px;
+        height:230px;
+        margin:0 auto;
+        perspective:1000px;
     }
 
     .gallery{
@@ -62,15 +62,15 @@
         border-radius:20px;
         overflow:hidden;
         box-shadow:0 10px 25px rgba(0,0,0,.15);
-        backface-visibility:hidden; /* Hides back-facing images to prevent overlapping chaos */
-        transition: opacity 0.5s;
+        backface-visibility:hidden; 
+        transition: opacity 0.5s, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
     .gallery-item img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-    background:#f5f5f5;
+        width:100%;
+        height:100%;
+        object-fit:cover; /* Swapped contain to cover for a modern, gapless look */
+        background:#f5f5f5;
     }
 
     .gallery-caption{
@@ -163,43 +163,49 @@
     .whatsapp{ background:#25D366; }
     .map{ background:#34a853; }
 
-
+    /* ---------- Responsive Overrides ---------- */
     @media (max-width:768px){
+        /* 
+           Convert the 3D wheel to a modern, horizontal, touch-swipeable gallery on mobile. 
+           This avoids warping, clipping, and tricky tapping.
+        */
+        .gallery-container{
+            max-width:100%;
+            height:220px;
+            overflow-x:auto;
+            scroll-snap-type:x mandatory;
+            -webkit-overflow-scrolling:touch;
+            scrollbar-width:none; /* Hide default scrollbar on Firefox */
+        }
+        
+        .gallery-container::-webkit-scrollbar {
+            display: none; /* Hide default scrollbar on Chrome/Safari */
+        }
 
-.gallery-container{
-    max-width:280px;
-    height:190px;
-}
+        .gallery{
+            position:relative;
+            display:flex;
+            transform-style:flat !important;
+            transform:none !important;
+            width:max-content;
+            gap:15px;
+            padding:0 15px;
+        }
 
-.gallery-item:nth-child(1){
-    transform:rotateY(0deg) translateZ(140px);
-}
+        .gallery-item{
+            position:relative;
+            width:280px;
+            height:100%;
+            flex-shrink:0;
+            scroll-snap-align:center;
+            opacity:1 !important;
+            transform:none !important;
+        }
 
-.gallery-item:nth-child(2){
-    transform:rotateY(60deg) translateZ(140px);
-}
-
-.gallery-item:nth-child(3){
-    transform:rotateY(120deg) translateZ(140px);
-}
-
-.gallery-item:nth-child(4){
-    transform:rotateY(180deg) translateZ(140px);
-}
-
-.gallery-item:nth-child(5){
-    transform:rotateY(240deg) translateZ(140px);
-}
-
-.gallery-item:nth-child(6){
-    transform:rotateY(300deg) translateZ(140px);
-}
-
-.nav-btn{
-    padding:10px 18px;
-    font-size:14px;
-}
-
+        /* Hide the navigation buttons on mobile since it's naturally swipeable */
+        .gallery-controls{
+            display:none;
+        }
     }
     </style>
 </head>
@@ -338,7 +344,7 @@
                 </div>
                 {% endif %}
             </div>
-        </div> <!-- Correctly closing the main left column -->
+        </div> 
 
         <!-- SIDEBAR COLUMN (RIGHT) -->
         <div class="col-lg-4">
@@ -398,16 +404,29 @@ let currentAngle = 0;
 const total = items.length;
 const angle = 360 / total;
 
-// Dynamic 3D depth based on screen size
 function getRadius() {
-    return window.innerWidth < 768 ? 180 : 320; 
+    return 320; // Used strictly for desktop now
+}
+
+function isMobile() {
+    return window.innerWidth < 768;
 }
 
 function initGallery() {
+    if (isMobile()) {
+        // Reset and strip inline 3D positioning styles on mobile so the CSS can take over
+        items.forEach(item => {
+            item.style.transform = '';
+            item.style.opacity = '';
+        });
+        gallery.style.transform = '';
+        return;
+    }
+
+    // Initialize desktop 3D spacing
     const radius = getRadius();
     items.forEach((item, index) => {
         item.style.transform = `rotateY(${index * angle}deg) translateZ(${radius}px)`;
-        // Fade out items sitting on the back half of the 3D wheel for a cleaner aesthetic
         if (index !== 0 && total > 2) {
             item.style.opacity = "0.5";
         }
@@ -415,36 +434,41 @@ function initGallery() {
 }
 
 function rotate() {
+    if (isMobile()) return; // Skip 3D math on mobile
+    
     gallery.style.transform = `rotateY(${currentAngle}deg)`;
     
-    // Smoothly adjust opacity of items as they rotate
     const activeIndex = Math.round((-currentAngle / angle) % total + total) % total;
     items.forEach((item, index) => {
         if (index === activeIndex) {
             item.style.opacity = "1";
         } else {
-            item.style.opacity = "0.4"; // Backside elements are faded
+            item.style.opacity = "0.4";
         }
     });
 }
 
 document.getElementById("nextBtn").onclick = function() {
+    if (isMobile()) return;
     currentAngle -= angle;
     rotate();
 }
 
 document.getElementById("prevBtn").onclick = function() {
+    if (isMobile()) return;
     currentAngle += angle;
     rotate();
 }
 
-// Swipe support
+// Swipe support (desktop only, native mobile touch handles mobile swiping)
 let startX = 0;
 gallery.addEventListener("touchstart", (e) => {
+    if (isMobile()) return;
     startX = e.changedTouches[0].screenX;
 }, {passive: true});
 
 gallery.addEventListener("touchend", (e) => {
+    if (isMobile()) return;
     let endX = e.changedTouches[0].screenX;
     let diff = startX - endX;
     if (Math.abs(diff) > 40) {
@@ -457,7 +481,7 @@ gallery.addEventListener("touchend", (e) => {
     }
 }, {passive: true});
 
-// Recalculate 3D spacing on screen resize
+// Trigger setup on resize
 window.addEventListener('resize', () => {
     initGallery();
     rotate();
