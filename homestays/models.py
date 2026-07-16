@@ -36,7 +36,7 @@ class Homestay(models.Model):
 
 # homestays/models.py
 
- class HomestayImage(models.Model):
+class HomestayImage(models.Model):
 
     homestay = models.ForeignKey(
         Homestay,
