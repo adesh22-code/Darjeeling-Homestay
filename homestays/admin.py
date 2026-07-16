@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Homestay, Booking, Review
+from .models import Homestay, Booking, Review, HomestayImage
 
 @admin.register(HomestayImage)
 class HomestayImageAdmin(admin.ModelAdmin):
