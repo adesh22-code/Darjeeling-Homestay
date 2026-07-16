@@ -194,23 +194,63 @@
         
         <!-- MAIN CONTENT COLUMN (LEFT) -->
         <div class="col-lg-8">
-            {% if homestay.image %}
-            <div class="position-relative mb-5">
-                <img src="{{ homestay.image.url }}" class="hero-image" alt="{{ homestay.name }}">
-                <div class="position-absolute bottom-0 start-0 w-100 p-4" style="background:linear-gradient(transparent,rgba(0,0,0,.75)); border-radius:20px;">
-                    <h1 class="display-4 fw-bold text-white">{{ homestay.name }}</h1>
-                    <p class="text-white fs-5 mb-2">
-                        <i class="bi bi-geo-alt-fill"></i> {{ homestay.location }}
-                    </p>
-                    {% if average_rating %}
-                    <span class="badge bg-warning text-dark fs-6">⭐ {{ average_rating|floatformat:1 }}</span>
-                    <span class="text-white">({{ reviews.count }} Reviews)</span>
-                    {% else %}
-                    <span class="badge bg-light text-dark">New Homestay</span>
-                    {% endif %}
-                </div>
+            <div class="gallery-container">
+
+    <div class="gallery" id="gallery">
+
+        {% for photo in gallery %}
+
+        <div class="gallery-item">
+
+            <img src="{{ photo.image.url }}" alt="{{ photo.caption }}">
+
+            {% if photo.caption %}
+            <div class="gallery-caption">
+                {{ photo.caption }}
             </div>
             {% endif %}
+
+        </div>
+
+        {% empty %}
+
+        {% if homestay.image %}
+
+        <div class="gallery-item">
+
+            <img src="{{ homestay.image.url }}" alt="{{ homestay.name }}">
+
+            <div class="gallery-caption">
+
+                {{ homestay.name }}
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+<div class="gallery-controls">
+
+    <button class="gallery-btn" id="prevBtn">
+
+        ← Previous
+
+    </button>
+
+    <button class="gallery-btn" id="nextBtn">
+
+        Next →
+
+    </button>
+
+</div>
 
             <p class="text-muted fs-5">📍 {{ homestay.location }}</p>
             
@@ -343,6 +383,99 @@
     </div>
 </footer>
 
+<script>
+
+const gallery = document.getElementById("gallery");
+
+const items = document.querySelectorAll(".gallery-item");
+
+let currentAngle = 0;
+
+const total = items.length;
+
+const angle = 360 / total;
+
+const radius = 420;
+
+
+
+items.forEach((item,index)=>{
+
+    item.style.transform =
+        `rotateY(${index*angle}deg) translateZ(${radius}px)`;
+
+});
+
+
+
+function rotate(){
+
+    gallery.style.transform =
+        `rotateY(${currentAngle}deg)`;
+
+}
+
+
+
+document.getElementById("nextBtn").onclick=function(){
+
+    currentAngle -= angle;
+
+    rotate();
+
+}
+
+
+
+document.getElementById("prevBtn").onclick=function(){
+
+    currentAngle += angle;
+
+    rotate();
+
+}
+
+
+
+// Swipe support
+
+let startX=0;
+
+gallery.addEventListener("touchstart",(e)=>{
+
+    startX=e.changedTouches[0].screenX;
+
+},{passive:true});
+
+
+
+gallery.addEventListener("touchend",(e)=>{
+
+    let endX=e.changedTouches[0].screenX;
+
+    let diff=startX-endX;
+
+    if(Math.abs(diff)>40){
+
+        if(diff>0){
+
+            currentAngle-=angle;
+
+        }else{
+
+            currentAngle+=angle;
+
+        }
+
+        rotate();
+
+    }
+
+},{passive:true});
+
+rotate();
+
+    </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
