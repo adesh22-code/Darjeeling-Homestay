@@ -1,8 +1,24 @@
 from django.contrib import admin
 from .models import Homestay, Booking, Review
 
-@admin.register(Review)
-class ReviewAdmin(admin.ModelAdmin):
+@admin.register(HomestayImage)
+class HomestayImageAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "homestay",
+        "caption",
+        "created_at",
+    )
+
+    list_filter = (
+        "homestay",
+        "created_at",
+    )
+
+    search_fields = (
+        "homestay__name",
+        "caption",
+    )
 
     list_display = (
         "user",
