@@ -5,6 +5,11 @@ from . import views
 
 urlpatterns = [
     path(
+    "owner/gallery/delete/<int:image_id>/",
+    owner_views.delete_gallery_image,
+    name="delete_gallery_image",
+),
+    path(
     "owner/gallery/<int:id>/",
     owner_views.manage_gallery,
     name="manage_gallery",
